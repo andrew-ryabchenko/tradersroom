@@ -1,0 +1,14 @@
+.material-icons{
+    padding:0;
+    cursor: pointer;
+    color: rgb(46, 43, 40);
+    border: 1px solid black;
+}
+.buttons{
+    margin:0;
+    display: inline;
+    background-color: rgb(46, 43, 40);
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+}

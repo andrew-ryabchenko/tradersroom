@@ -1,14 +1,25 @@
-.material-icons{
-    padding:0;
-    cursor: pointer;
-    color: rgb(46, 43, 40);
-    border: 1px solid black;
-}
+
 .buttons{
-    margin:0;
+    background-color:rgb(46, 43, 40);
+    border-radius: 3px;
+    cursor: pointer;
+    user-select: none;
     display: inline;
-    background-color: rgb(46, 43, 40);
-    border-radius: 5px;
+    padding: 3px 10px 3px 10px;
     color: white;
-    padding: 5px;
+}
+
+.tables *{
+    text-align: center;
+    padding: 3px 10px 3px 10px;
+
+}
+.tables th{
+    background-color: rgb(46, 43, 40);
+    color: white;
+    font-weight: normal;
+    user-select: none;
+}
+.tables{
+    width: 100%;
 }

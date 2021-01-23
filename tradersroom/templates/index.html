@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -15,31 +14,40 @@
 <body>
     <div class='container-fluid py-4 text-white' style='background-color: rgb(46, 43, 40);'>Trader's Room</div>
     <div class='container py-3 my-4 border rounded'>
-        <form>
+        <form id='inputForm'>
             <div class="row">
                 <div class="col-md">
-                    <input class='form-control my-1' type='number' min=0.0 max=1.0 step=0.01 placeholder="Risk" data-toggle="tooltip"
+                    <input class='form-control my-1' type='number' name='risk' min=0.0 max=1.0 step=0.01 placeholder="Risk" data-toggle="tooltip"
                     data-placement="top" title="Allowed risk expressed in percentage of account size for all positions combined (0.0 < R < 1.0)" required>
                 </div>
                 <div class="col-md">
-                    <input class='form-control my-1' type='number' min=0 placeholder="Account size" required>
+                    <input class='form-control my-1' name='accountSize' type='number' min=0 placeholder="Account size" required>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md">
-                    <input class='form-control my-1' type='number' min=0 placeholder="Entry price" required>
+                    <input class='form-control my-1' name='symbol' type='text' placeholder="Symbol" required>
                 </div>
                 <div class="col-md">
-                    <input class='form-control my-1' type='number' min=0 placeholder="Stop price" required>
+                    <input class='form-control my-1' name='entryPrice' type='number' min=0 placeholder="Entry price" required>
+                </div>
+                <div class="col-md">
+                    <input class='form-control my-1' name='stopPrice' type='number' min=0 placeholder="Stop price" required>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md py-3" style="text-align: right;">
-                    <div id='calculateButton' class='buttons'>Calculate</div>
-                    <div class='buttons'><img src="static/control_point-white-18dp.svg" alt="Add"></div>
+                    <!-- <div id='calculateButton' class='buttons'>Calculate</div> -->
+                    <div id='addButton' class='buttons'>Add</div>
                 </div>
             </div>
-
+            <div class='row'>
+                <div class='col-md py-3 mx-3 border rounded' style='height: 343px; overflow-y: scroll;'>
+                    <ul id='list' class="list-group">
+                        
+                    </ul>
+                </div>
+            </div>
         </form>
     </div>
     <script>
@@ -47,5 +55,6 @@
           $('[data-toggle="tooltip"]').tooltip();   
         });
     </script>
+    <script src="/static/table_add.js"></script>
 </body>
 </html>

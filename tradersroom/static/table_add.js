@@ -1,4 +1,4 @@
-const list = document.getElementById('list');
+
 const addButton = document.getElementById('addButton');
 const inputForm = document.getElementsByTagName('input');
 // const removeButton = document.getElementsByClassName('removePosition')
@@ -41,53 +41,52 @@ function verifyInput(){
                 break;
         }
     }
-    // var rowsDict = {};
-    // rowsDict.symbol = symbol;
-    // rowsDict.entryPrice = entryPrice;
-    // rowsDict.stopPrice = stopPrice;
-    // rows.push(rowsDict);
-    rows.push([symbol,entryPrice,stopPrice]);
-    return [symbol,entryPrice,stopPrice];
+    rows.push({'symbol':symbol, 'entry':entryPrice, 'stop':stopPrice});
+    return {'symbol':symbol, 'entry':entryPrice, 'stop':stopPrice};
 }
-function createRow(inputData){
-    var li = document.createElement('li');
-    li.className = 'list-group-item my-2 rounded';
-    var string = `${inputData[0].toUpperCase()} | Entry price: ${inputData[1]} | Stop price: ${inputData[2]} <span class="material-icons 
-    removePositition" onclick="deleteRow(this)" style="position: absolute; right:10px; top:27%; font-variant: normal; cursor: pointer; user-select: none;">close</span>`
-    li.innerHTML = string;
-    li.style.fontVariant = 'small-caps';
-    li.style.fontWeight = '500';
-    li.style.overflowX = 'hidden';
-    if (list.childNodes.length % 2 == 0){
-        li.style.backgroundColor = 'rgba(46, 43, 40, 0.3)';
+function update(){
+    let list = document.getElementById('list');
+    while (list.firstChild){
+        list.removeChild(list.firstChild);
     }
-    else{
-        li.style.backgroundColor = 'rgba(46, 43, 40, 0.05)';
+    for(let i = 0; i<rows.length; i++){
+        var li = document.createElement('li');
+        li.className = 'list-group-item my-2 rounded';
+        var string = `${rows[i]['symbol'].toUpperCase()} | Entry price: ${rows[i]['entry']} | Stop price: ${rows[i]['stop']} | Position size: ${rows[i]['pos']} <span class="material-icons 
+        removePositition" onclick="deleteRow(this)" style="position: absolute; right:10px; top:27%; font-variant: normal; cursor: pointer; user-select: none;">close</span>`
+        li.innerHTML = string;
+        li.style.fontVariant = 'small-caps';
+        li.style.fontWeight = '500';
+        li.style.overflowX = 'hidden';
+        li.style.backgroundColor = 'rgb(245,245,245)';
+        list.append(li);
     }
-    return li;
+    return true;
 }
 function deleteRow(cross){
+    var list = document.getElementById('list');
     var rowToDelete = cross.parentElement; 
     var index = Array.prototype.indexOf.call(list.children, rowToDelete);
     var animation = animate(rowToDelete, direction=0);
     animation.onfinish = function (){
         list.removeChild(rowToDelete);
     };
-    delete rows[index];
-    console.log(rows);
-
+    rows.splice(index, 1);
+    calculate();
+    return update();
 }
-
 function calculate(){
-    // for(let i=0; i<rows.length; i++){
-    //     console.log(rows[i]);
-    // }
-    var splitSize = accSize / rows.length;
+    var riskPerStock = (accSize / rows.length) * risk;
     for(let i=0; i<rows.length; i++){
-         
+        var item = rows[i];
+        var stop = item['stop'];
+        var entry = item['entry'];
+        var R = Math.abs(stop - entry);
+        var pSize = (riskPerStock / R) > (accSize / rows.length) ? (accSize / rows.length) / R : (riskPerStock / R);
+        rows[i]['pos'] = pSize;
     }
-
 }
+
 function animate(element, direction=1){
     var from = direction ? 0 : 1;
     var to = direction ? 1 : 0;
@@ -103,11 +102,8 @@ function animate(element, direction=1){
 addButton.addEventListener('click', function(event){
     var inputData = verifyInput();
     if (inputData){
-        var li = createRow(inputData);
-        list.append(li);
-        animate(li);
-        li.scrollIntoView();
-        
+        calculate();
+        return update();
     }
 })
 
